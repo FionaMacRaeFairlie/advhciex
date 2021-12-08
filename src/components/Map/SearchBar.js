@@ -6,6 +6,11 @@ import SearchModal from "../Homepage/searchModal";
 import "./styles/barStyle.scss";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import {
+  useGetHostelSearchQuery,
+  useLazyGetHostelSearchQuery,
+  usePrefetch,
+} from "../../reduxStore/RTKfetch/apiSlice";
 const SearchBar = (dataToFilter) => {
   const {
     register,
@@ -15,21 +20,23 @@ const SearchBar = (dataToFilter) => {
   } = useForm();
 
   const history = useHistory();
-  //const [query, setQueryData] = useState();
-  //const { data, error, isLoading, isSuccess, isUninitialized } = useGetHostelSearchQuery(query);
+
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState();
   const [showHostelModal, setShowHostelModal] = useState(false);
 
   const searchedHostel = useSelector((state) => state.hostels.data);
 
+  const [query, setQueryData] = useState();
+  const [trigger, result, lastPromiseInfo] = useLazyGetHostelSearchQuery(query);
+
   const onSubmit = (formData) => {
-    console.log(formData);
-    console.log("hey bar click");
-    console.log("bar comp hostel", searchedHostel);
-    // useGetHostelSearchQuery(formData.searchBar);
-    // console.log(data, isLoading, error, isSuccess, isUninitialized);
+    // console.log(formData);
+    // console.log("hey bar click");
+    // console.log("bar comp hostel", searchedHostel);
+
     //MANUALLY FETCHING COUSE HOOK INVALID IN FUNCTION NEED TO SOLVE THIS
+
     fetch("/hostels/search/" + formData.searchBar)
       .then((res) => res.json())
       .then((data) => {
@@ -37,6 +44,10 @@ const SearchBar = (dataToFilter) => {
         setModalData(data);
         setShowModal(true);
       });
+    // setQueryData(formData.searchBar);
+    // trigger(formData.searchBar);
+
+    // console.log("redux data is ->", trigger, result, lastPromiseInfo);
   };
 
   useEffect(() => {

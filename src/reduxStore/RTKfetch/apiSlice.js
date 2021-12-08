@@ -8,6 +8,9 @@ export const dataApi = createApi({
     getAllHostels: builder.query({
       query: (name) => "/hostels",
     }),
+    getHostelById: builder.query({
+      query: (name) => `/hostels/${name}`,
+    }),
     getHostelSearch: builder.query({
       query: (name) => `/hostels/search/${name}`,
     }),
@@ -25,6 +28,14 @@ export const dataApi = createApi({
         body: name,
       }),
     }),
+
+    postReview: builder.mutation({
+      query: (data) => ({
+        url: `hostels/review/${data.hostelId}`,
+        method: "POST",
+        body: { reviewer: data.name, review: data.description },
+      }),
+    }),
   }),
 });
 
@@ -33,4 +44,7 @@ export const {
   useAuthMutation,
   useGetHostelSearchQuery,
   useGetAuthorizationQuery,
+  useLazyGetHostelSearchQuery,
+  usePostReviewMutation,
+  useGetHostelByIdQuery,
 } = dataApi;

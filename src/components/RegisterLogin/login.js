@@ -28,7 +28,6 @@ const Login = () => {
   const dispatch = useDispatch();
 
   //const [auth, { isSuccess, status, data, isLoading }] = useAuthMutation();
-  const [skipT, setSkip] = useState(true);
   const [toBeValidated, setTobeValidated] = useState();
 
   const { data, error, isLoading, isSuccess, refetch } =
