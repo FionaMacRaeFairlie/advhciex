@@ -1,0 +1,46 @@
+@import "../../../styles/common/theme.scss";
+
+h2 {
+  //color: black;
+}
+
+.infoDiv {
+  flex: 4;
+}
+
+span {
+  margin-top: 1rem;
+  //flex: 2;
+}
+.dashWrapper {
+  color: white;
+  height: inherit;
+  align-items: unset;
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-evenly;
+}
+
+.dashCol {
+  height: 100vh;
+  background-color: $darkGrey;
+}
+
+.btnDiv {
+  flex: 5;
+}
+
+.buttonGroup {
+  width: 100%;
+}
+
+.dashBtn {
+  background-color: $lightGrey !important;
+  border-color: $lightGrey !important;
+  color: black !important;
+}
+
+.dashBtn:hover {
+  background-color: $cyan !important;
+  color: white !important;
+}
