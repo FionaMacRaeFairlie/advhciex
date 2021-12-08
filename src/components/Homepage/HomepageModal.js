@@ -38,7 +38,7 @@ function HomepageModal(props) {
   const [postReview, { isSuccess, status, isLoading }] =
     usePostReviewMutation();
 
-  const { data, error, refetch } = useGetHostelByIdQuery(props.data.id); //doesnotwork
+  const { data, error, refetch } = useGetHostelByIdQuery(props.data.id);
   useEffect(() => {
     console.log(data);
   });
