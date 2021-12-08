@@ -78,4 +78,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## run project
 
+### `cd ..`
+
 ### `npm run startAll`
