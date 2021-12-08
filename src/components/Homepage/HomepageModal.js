@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Form, FloatingLabel } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { Chart, Pie } from "react-chartjs-2";
 import PieChart from "../Chart/Chart";
-// import Chart from "../Chart/Chart";
 import "./styles/modalStyle.scss";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import {
+  useGetHostelByIdQuery,
+  usePostReviewMutation,
+} from "../../reduxStore/RTKfetch/apiSlice";
 
 function HomepageModal(props) {
-  useEffect(() => {
-    console.log(props.data);
-
-    console.log(props.data.ratings);
-  });
-
   let ratings = props.data.ratings;
   const calcAvg = (elmt) => {
     var sum = 0;
@@ -26,6 +25,33 @@ function HomepageModal(props) {
 
   const [showReviews, setShowReviews] = useState(false);
   const [init, setInit] = useState(true);
+  const [showWriteReview, setShowWriteReview] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const user = useSelector((state) => state.login.verifyUser.user);
+  const [postReview, { isSuccess, status, isLoading }] =
+    usePostReviewMutation();
+
+  const { data, error, refetch } = useGetHostelByIdQuery(props.data.id); //doesnotwork
+  useEffect(() => {
+    console.log(data);
+  });
+
+  const onSubmit = (formData) => {
+    let dataToSubmit = {
+      hostelId: props.data.id,
+      name: user.personalInfo.name,
+      description: formData.WriteReview,
+    };
+    postReview(dataToSubmit);
+    props.onHide();
+  };
 
   const initState = () => {
     return (
@@ -62,7 +88,7 @@ function HomepageModal(props) {
   };
 
   const reviews = (d) => {
-    return d.map((key, val) => {
+    return d[0].reviews.map((key, val) => {
       return (
         <div key={val} className="reviewContainer">
           <div className="reviewWrap">
@@ -72,6 +98,21 @@ function HomepageModal(props) {
         </div>
       );
     });
+  };
+
+  const WriteReview = () => {
+    return (
+      <form className="writeReviewForm">
+        <FloatingLabel controlId="writeReviewTextArea" label="WriteReview">
+          <Form.Control
+            as="textarea"
+            placeholder="Write here your review"
+            style={{ height: "100%" }}
+            {...register("WriteReview", { required: true })}
+          />
+        </FloatingLabel>
+      </form>
+    );
   };
 
   return (
@@ -91,24 +132,52 @@ function HomepageModal(props) {
         <Modal.Body>
           {init && initState()}
 
-          {showReviews && reviews(props.data.reviews)}
+          {showReviews && reviews(data)}
+
+          {showWriteReview && <WriteReview />}
         </Modal.Body>
         <Modal.Footer>
           {init && (
+            <>
+              <Button
+                className="primButton"
+                onClick={() => {
+                  setInit(false);
+                  setShowReviews(true);
+                  refetch();
+                }}
+              >
+                View reviews
+              </Button>
+
+              <Button className="primButton" onClick={() => {}}>
+                Rate this hostel
+              </Button>
+            </>
+          )}
+
+          {!showWriteReview && (
             <Button
               className="primButton"
               onClick={() => {
+                setShowWriteReview(true);
+                setShowReviews(false);
                 setInit(false);
-                setShowReviews(true);
               }}
             >
-              View reviews
+              Write a review
             </Button>
           )}
 
-          <Button className="primButton" onClick={props.onHide}>
-            Write a review
-          </Button>
+          {showWriteReview && (
+            <Button
+              className="primButton"
+              onClick={handleSubmit((formData) => onSubmit(formData))}
+              type="submit"
+            >
+              Post Review
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </div>
