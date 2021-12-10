@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import { verifyUser } from "../slices/loginSlice";
 export const dataApi = createApi({
   reducerPath: "dataAPI",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001" }),
@@ -14,19 +14,29 @@ export const dataApi = createApi({
     getHostelSearch: builder.query({
       query: (name) => `/hostels/search/${name}`,
     }),
-    auth: builder.mutation({
-      query: (data) => ({
-        url: "/login",
-        method: "POST",
-        body: data,
-      }),
-    }),
+    // auth: builder.mutation({
+    //   query: (data) => ({
+    //     url: "/login",
+    //     method: "POST",
+    //     body: data,
+    //   }),
+    // }),
     getAuthorization: builder.query({
       query: (name) => ({
         url: `/login`,
         method: "POST",
         body: name,
       }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        console.log("login Query started");
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data, "query finished");
+          dispatch(verifyUser(data));
+        } catch (err) {
+          console.log(err);
+        }
+      },
     }),
 
     postReview: builder.mutation({

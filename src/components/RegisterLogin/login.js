@@ -27,36 +27,23 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
-  //const [auth, { isSuccess, status, data, isLoading }] = useAuthMutation();
   const [toBeValidated, setTobeValidated] = useState();
 
   const { data, error, isLoading, isSuccess, refetch } =
     useGetAuthorizationQuery(toBeValidated);
 
-  useEffect(() => {}, [toBeValidated]);
+  const user = useSelector((state) => state.login.verifyUser);
+
+  useEffect(() => {
+    if (user.success) {
+      history.push("/homepage");
+    }
+  }, [user]);
   const onSubmit = (formData) => {
-    //  console.log(formData);
-    // auth({ username: formData.username, password: formData.password });
-
-    // console.log(data, isSuccess, status, isLoading);
-
-    // if (status === "uninitialized" || data === undefined) {
-    //   // auth({ username: formData.username, password: formData.password });
-    //   console.log("uninitialised");
-    //   console.log(data);
-    // }
-
-    // if (data.success == true) {
-    //   //set user in redux store to retreive it and navigate to dashboard
-    //   dispatch(verifyUser(data));
-    //   history.push("/homepage");
-    // }
     setTobeValidated({
       username: formData.username,
       password: formData.password,
     });
-    //setSkip(false);
-    //refetch();
 
     console.log(data, error, isLoading, isSuccess);
 
@@ -68,12 +55,6 @@ const Login = () => {
     }
     {
       isSuccess && data.success && console.log("query data", data);
-    }
-
-    if (data.success) {
-      //set user in redux store to retreive it and navigate to dashboard
-      dispatch(verifyUser(data));
-      history.push("/homepage");
     }
   };
   return (
