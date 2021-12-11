@@ -21,22 +21,30 @@ const Home = (props) => {
 
   const searchedHostel = useSelector((state) => state.hostels.data);
 
+  const { data, error, isLoading, isSuccess, refetch } =
+    useGetAllHostelsQuery();
+  const hostelsData = useSelector((state) => state.hostels.allHostels);
+
+  // useEffect(() => {
+  //   console.log(hostelsData);
+  // });
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log("home loaded");
+  // useEffect(() => {
+  //   console.log("home loaded");
 
-    console.log("----------");
-    console.log(props);
-    console.log(searchedHostel);
-  });
+  //   console.log("----------");
+  //   console.log(props);
+  //   console.log(searchedHostel);
+  // });
   return (
     <div>
       {userVerified.success ? (
         <Container fluid>
           <Row>
             <Col>
-              <Map></Map>
+              <Map hostels={hostelsData}></Map>
             </Col>
             <Col xs lg="2" className="dashCol">
               <Dashboard></Dashboard>

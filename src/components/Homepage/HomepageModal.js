@@ -8,11 +8,12 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import {
   useGetHostelByIdQuery,
+  usePostRateMutation,
   usePostReviewMutation,
+  useGetAllHostelsQuery,
 } from "../../reduxStore/RTKfetch/apiSlice";
 
 function HomepageModal(props) {
-  let ratings = props.data.ratings;
   const calcAvg = (elmt) => {
     var sum = 0;
     for (var i = 0; i < elmt.length; i++) {
@@ -26,6 +27,7 @@ function HomepageModal(props) {
   const [showReviews, setShowReviews] = useState(false);
   const [init, setInit] = useState(true);
   const [showWriteReview, setShowWriteReview] = useState(false);
+  const [showRate, setShowRate] = useState(false);
 
   const {
     register,
@@ -35,13 +37,19 @@ function HomepageModal(props) {
   } = useForm();
 
   const user = useSelector((state) => state.login.verifyUser.user);
+
   const [postReview, { isSuccess, status, isLoading }] =
     usePostReviewMutation();
 
   const { data, error, refetch } = useGetHostelByIdQuery(props.data.id);
-  useEffect(() => {
-    console.log(data);
-  });
+  let ratings = props.data.ratings;
+
+  const [postRate] = usePostRateMutation();
+
+  const { refetch: allHostelRefetch } = useGetAllHostelsQuery();
+  // useEffect(() => {
+  //   console.log(data);
+  // });
 
   const onSubmit = (formData) => {
     let dataToSubmit = {
@@ -50,6 +58,12 @@ function HomepageModal(props) {
       description: formData.WriteReview,
     };
     postReview(dataToSubmit);
+    props.onHide();
+  };
+
+  const onSubmitRate = (formData) => {
+    postRate({ hostelId: props.data.id, rate: formData.hostelRate });
+    allHostelRefetch();
     props.onHide();
   };
 
@@ -115,6 +129,62 @@ function HomepageModal(props) {
     );
   };
 
+  const RateHostel = () => {
+    return (
+      <form>
+        {["radio"].map((type) => (
+          <div key={`inline-${type}`} className="mb-3">
+            <Form.Check
+              inline
+              label="1"
+              name="group1"
+              type={type}
+              id={`inline-${type}-1`}
+              {...register("hostelRate", { required: true })}
+              value="1"
+            />
+            <Form.Check
+              inline
+              label="2"
+              name="group1"
+              type={type}
+              id={`inline-${type}-2`}
+              {...register("hostelRate", { required: true })}
+              value="2"
+            />
+            <Form.Check
+              inline
+              label="3"
+              name="group1"
+              type={type}
+              id={`inline-${type}-3`}
+              {...register("hostelRate", { required: true })}
+              value="3"
+            />
+            <Form.Check
+              inline
+              label="4"
+              name="group1"
+              type={type}
+              id={`inline-${type}-4`}
+              {...register("hostelRate", { required: true })}
+              value="4"
+            />
+            <Form.Check
+              inline
+              label="5"
+              name="group1"
+              type={type}
+              id={`inline-${type}-5`}
+              {...register("hostelRate", { required: true })}
+              value="5"
+            />
+          </div>
+        ))}
+      </form>
+    );
+  };
+
   return (
     <div>
       <Modal
@@ -135,6 +205,8 @@ function HomepageModal(props) {
           {showReviews && reviews(data)}
 
           {showWriteReview && <WriteReview />}
+
+          {showRate && <RateHostel />}
         </Modal.Body>
         <Modal.Footer>
           {init && (
@@ -150,7 +222,13 @@ function HomepageModal(props) {
                 View reviews
               </Button>
 
-              <Button className="primButton" onClick={() => {}}>
+              <Button
+                className="primButton"
+                onClick={() => {
+                  setShowRate(true);
+                  setInit(false);
+                }}
+              >
                 Rate this hostel
               </Button>
             </>
@@ -163,6 +241,7 @@ function HomepageModal(props) {
                 setShowWriteReview(true);
                 setShowReviews(false);
                 setInit(false);
+                setShowRate(false);
               }}
             >
               Write a review
@@ -176,6 +255,16 @@ function HomepageModal(props) {
               type="submit"
             >
               Post Review
+            </Button>
+          )}
+
+          {showRate && (
+            <Button
+              className="primButton"
+              onClick={handleSubmit((formData) => onSubmitRate(formData))}
+              type="submit"
+            >
+              Post your rating
             </Button>
           )}
         </Modal.Footer>

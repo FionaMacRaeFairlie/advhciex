@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   data: null,
+  allHostels: null,
 };
 
 export const hostelSlice = createSlice({
   name: "hostelSlice",
   initialState,
   reducers: {
-    getHostels: (state) => {
-      console.log("redux", state);
+    getHostels: (state, action) => {
+      state.allHostels = action.payload;
 
       //state.data = data;
     },

@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getHostels } from "../slices/hostelSlice";
 import { verifyUser } from "../slices/loginSlice";
 export const dataApi = createApi({
   reducerPath: "dataAPI",
@@ -7,6 +8,16 @@ export const dataApi = createApi({
   endpoints: (builder) => ({
     getAllHostels: builder.query({
       query: (name) => "/hostels",
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        console.log("updating all hostels State");
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data, "query finished");
+          dispatch(getHostels(data));
+        } catch (err) {
+          console.log(err);
+        }
+      },
     }),
     getHostelById: builder.query({
       query: (name) => `/hostels/${name}`,
@@ -46,6 +57,12 @@ export const dataApi = createApi({
         body: { reviewer: data.name, review: data.description },
       }),
     }),
+    postRate: builder.mutation({
+      query: (data) => ({
+        url: `hostels/rate/${data.hostelId}/${data.rate}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -57,4 +74,5 @@ export const {
   useLazyGetHostelSearchQuery,
   usePostReviewMutation,
   useGetHostelByIdQuery,
+  usePostRateMutation,
 } = dataApi;
