@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getHostels } from "../slices/hostelSlice";
+import { assignHostel, getItinerary } from "../slices/itinerarySlice";
 import { verifyUser } from "../slices/loginSlice";
 export const dataApi = createApi({
   reducerPath: "dataAPI",
@@ -21,6 +22,16 @@ export const dataApi = createApi({
     }),
     getHostelById: builder.query({
       query: (name) => `/hostels/${name}`,
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        console.log("login Query started");
+        try {
+          const { data } = await queryFulfilled;
+          // console.log(data, "query finished");
+          dispatch(assignHostel(data));
+        } catch (err) {
+          console.log(err);
+        }
+      },
     }),
     getHostelSearch: builder.query({
       query: (name) => `/hostels/search/${name}`,
@@ -49,6 +60,9 @@ export const dataApi = createApi({
         }
       },
     }),
+    getItineraryByUser: builder.query({
+      query: (name) => `/itineraries/${name}`,
+    }),
 
     postReview: builder.mutation({
       query: (data) => ({
@@ -63,6 +77,29 @@ export const dataApi = createApi({
         method: "GET",
       }),
     }),
+    newUserItinerary: builder.mutation({
+      query: (data) => ({
+        url: `/itineraries/new/${data}`,
+        method: "GET",
+      }),
+    }),
+    newItineraryStage: builder.mutation({
+      query: (data) => ({
+        url: `/itineraries/stages/new/${data.userName}`,
+        method: "Post",
+        body: { hostel: data.hostel, nights: data.nights },
+      }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        console.log("storing itinerary in redux store");
+        try {
+          const { data } = await queryFulfilled;
+          // console.log(data, "query finished");
+          dispatch(getItinerary(data));
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    }),
   }),
 });
 
@@ -75,4 +112,8 @@ export const {
   usePostReviewMutation,
   useGetHostelByIdQuery,
   usePostRateMutation,
+  useNewUserItineraryMutation,
+  useNewItineraryStageMutation,
+  useGetItineraryByUserQuery,
+  useLazyGetHostelByIdQuery,
 } = dataApi;

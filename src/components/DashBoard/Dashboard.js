@@ -11,13 +11,21 @@ import {
 } from "react-bootstrap";
 import "./style/dashboard.scss";
 import { useState } from "react";
-import { useGetAllHostelsQuery } from "../../reduxStore/RTKfetch/apiSlice";
+import {
+  useGetAllHostelsQuery,
+  useNewUserItineraryMutation,
+} from "../../reduxStore/RTKfetch/apiSlice";
 import SearchModal from "../Homepage/searchModal";
 import { useSelector } from "react-redux";
+import PlanTripModal from "../PlanTrip/PlanTripModal";
 const Dashboard = () => {
   const { data, error, isLoading, isSuccess } = useGetAllHostelsQuery();
   const [showHostelsModal, setShowHostelsModal] = useState(false);
+  const [planTripModal, setPlanTripModal] = useState(false);
   const user = useSelector((state) => state.login.verifyUser.user);
+
+  const [newUserItinerary] = useNewUserItineraryMutation();
+
   return (
     <div className="dashWrapper">
       <span>Your Account:</span>
@@ -36,7 +44,15 @@ const Dashboard = () => {
           >
             List all hostels
           </Button>
-          <Button className="dashBtn">Plan your Trip</Button>
+          <Button
+            className="dashBtn"
+            onClick={() => {
+              setPlanTripModal(true);
+              newUserItinerary(user.user);
+            }}
+          >
+            Plan your Trip
+          </Button>
           <Button className="dashBtn">View Your Journey</Button>
         </ButtonGroup>
       </div>
@@ -51,6 +67,13 @@ const Dashboard = () => {
           data={data}
           title={"List of hostels along the way!"}
         ></SearchModal>
+      )}
+
+      {planTripModal && (
+        <PlanTripModal
+          show={planTripModal}
+          onHide={() => setPlanTripModal(false)}
+        />
       )}
     </div>
   );

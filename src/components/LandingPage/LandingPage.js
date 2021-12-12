@@ -24,7 +24,7 @@ const LandingPage = () => {
               <li>view your journey progress</li>
             </ul>
             <Link to="/register">
-              <Button className="primButton">Start Now</Button>
+              <Button className="primButton landBtn">Start Now</Button>
             </Link>
           </div>
         </Col>
