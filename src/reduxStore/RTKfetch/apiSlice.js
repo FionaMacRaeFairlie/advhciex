@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getHostels } from "../slices/hostelSlice";
-import { assignHostel, getItinerary } from "../slices/itinerarySlice";
+import {
+  assignHostel,
+  getItinerary,
+  itineraryExist,
+  resetPathAfterEdit,
+} from "../slices/itinerarySlice";
 import { verifyUser } from "../slices/loginSlice";
 export const dataApi = createApi({
   reducerPath: "dataAPI",
@@ -33,9 +38,13 @@ export const dataApi = createApi({
         }
       },
     }),
+    getHostelByIdNoCB: builder.query({
+      query: (name) => `/hostels/${name}`,
+    }),
     getHostelSearch: builder.query({
       query: (name) => `/hostels/search/${name}`,
     }),
+
     // auth: builder.mutation({
     //   query: (data) => ({
     //     url: "/login",
@@ -77,6 +86,12 @@ export const dataApi = createApi({
         method: "GET",
       }),
     }),
+    setItineraryStartDate: builder.mutation({
+      query: (name) => ({
+        url: `/itineraries/startdate/${name.user}/${name.date}`,
+        method: "GET",
+      }),
+    }),
     newUserItinerary: builder.mutation({
       query: (data) => ({
         url: `/itineraries/new/${data}`,
@@ -100,6 +115,26 @@ export const dataApi = createApi({
         }
       },
     }),
+
+    updateItineraryStage: builder.mutation({
+      query: (data) => ({
+        url: `/itineraries/stages/update/${data.userName}/${data.stageId}`,
+        method: "Post",
+        body: { hostel: data.hostel, nights: data.nights },
+        headers: { "content-type": "application/json" },
+      }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        console.log("storing itinerary in redux store");
+        try {
+          const { data } = await queryFulfilled;
+          // console.log(data, "query finished");
+          dispatch(getItinerary(data));
+          //dispatch(resetPathAfterEdit(data));
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    }),
   }),
 });
 
@@ -109,11 +144,14 @@ export const {
   useGetHostelSearchQuery,
   useGetAuthorizationQuery,
   useLazyGetHostelSearchQuery,
+  useLazyGetHostelByIdQuery,
   usePostReviewMutation,
   useGetHostelByIdQuery,
   usePostRateMutation,
   useNewUserItineraryMutation,
   useNewItineraryStageMutation,
   useGetItineraryByUserQuery,
-  useLazyGetHostelByIdQuery,
+  useLazyGetHostelByIdNoCBQuery,
+  useSetItineraryStartDateMutation,
+  useUpdateItineraryStageMutation,
 } = dataApi;

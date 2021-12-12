@@ -4,8 +4,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import Goat from "./assets/goat.png";
 import "./style/landingPage.scss";
 import { Link } from "react-router-dom";
+import { useGetAllHostelsQuery } from "../../reduxStore/RTKfetch/apiSlice";
 
 const LandingPage = () => {
+  const { data, error, isLoading, isSuccess, refetch } =
+    useGetAllHostelsQuery();
   return (
     <Container>
       <Row className="row">

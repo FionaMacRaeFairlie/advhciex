@@ -13,11 +13,12 @@ import {
   useNewItineraryStageMutation,
   useGetItineraryByUserQuery,
   useSetItineraryStartDateMutation,
+  useUpdateItineraryStageMutation,
 } from "../../reduxStore/RTKfetch/apiSlice";
-import "./style/planTripStyle.scss";
+//import "./style/planTripStyle.scss";
 import { itineraryExist } from "../../reduxStore/slices/itinerarySlice";
 
-function PlanTripModal(props) {
+function EditStageModal(props) {
   const {
     register,
     handleSubmit,
@@ -26,21 +27,24 @@ function PlanTripModal(props) {
     reset,
   } = useForm();
 
-  const [stage, setAddStage] = useState(1);
+  //   const [stage, setAddStage] = useState(1);
   const hostels = useSelector((state) => state.hostels.allHostels);
   const user = useSelector((state) => state.login.verifyUser.user);
-  const isItinerary = useSelector((state) => state.itinerary.itineraryExist);
-  const path = useSelector((state) => state.itinerary.path);
+  //   const isItinerary = useSelector((state) => state.itinerary.itineraryExist);
   const { data: itineraryData, refetch: refetchItinerary } =
     useGetItineraryByUserQuery(user.user);
 
-  const [newItineraryStage] = useNewItineraryStageMutation();
-  const [setItDate] = useSetItineraryStartDateMutation();
+  const [updateItineraryStage] = useUpdateItineraryStageMutation();
+  //   const [setItDate] = useSetItineraryStartDateMutation();
 
-  const [showStageForm, setShowStageForm] = useState(false);
-  const [showDateForm, setShowDateForm] = useState(true);
+  //   const [showStageForm, setShowStageForm] = useState(false);
+  //   const [showDateForm, setShowDateForm] = useState(true);
 
-  const dispatch = useDispatch();
+  //   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("props", props);
+  });
 
   const renderOptions = () => {
     return hostels.map((key, val) => {
@@ -52,16 +56,12 @@ function PlanTripModal(props) {
     });
   };
 
-  useEffect(() => {
-    console.log("path length is -<>", itineraryExist);
-  });
-
   const renderForm = () => {
     return (
       <>
         <form className="stageForm">
-          <div key={stage}>
-            <h1>Stage: {stage}</h1>
+          <div>
+            <h1>Stage: {props.data.stage} </h1>
             <Form.Select {...register("hostelStage", { required: true })}>
               <option selected={true} disabled="disabled" value="">
                 Choose Hostel...
@@ -84,64 +84,30 @@ function PlanTripModal(props) {
           className="primButton"
           onClick={handleSubmit((formData) => {
             const reqBody = {
+              stageId: props.data.stage,
               userName: user.user,
               hostel: formData.hostelStage,
               nights: formData.nights,
             };
-            console.log(formData);
-            setAddStage(stage + 1);
-            newItineraryStage(reqBody);
-            reset({ hostelStage: "", nights: "" });
+            // console.log(formData);
+            // setAddStage(stage + 1);
+            updateItineraryStage(reqBody);
+            // reset({ hostelStage: "", nights: "" });
             refetchItinerary();
+            props.onHide();
           })}
           type="submit"
         >
-          Add stage
+          Edit stage
         </Button>
 
         <Button
           className="primButton"
           onClick={() => {
-            console.log("close btn", path.length);
-            if (path.length > 0) {
-              dispatch(itineraryExist());
-            }
-
             props.onHide();
           }}
           type="submit"
         >
-          Close
-        </Button>
-      </>
-    );
-  };
-
-  const startDateForm = () => {
-    return (
-      <>
-        <form className="stageForm">
-          <h1>Please Select Your Starting date</h1>
-          <Form.Control
-            {...register("startDate", { required: true })}
-            type="date"
-            placeholder="select a starting date..."
-          />
-        </form>
-        <Button
-          className="primButton"
-          onClick={handleSubmit((formData) => {
-            console.log(formData);
-            setItDate({ user: user.user, date: formData.startDate });
-            setShowDateForm(false);
-            setShowStageForm(true);
-          })}
-          type="submit"
-        >
-          set date
-        </Button>
-
-        <Button className="primButton" onClick={props.onHide} type="submit">
           Close
         </Button>
       </>
@@ -159,25 +125,13 @@ function PlanTripModal(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Plan your trip
+            Edit stage ...
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          {!isItinerary ? (
-            <>
-              {showStageForm && renderForm()}
-              {showDateForm && startDateForm()}
-            </>
-          ) : (
-            <h1>You already have an itinerary planned, please edit it</h1>
-          )}
-        </Modal.Body>
-        {/* <Modal.Footer>
-         
-        </Modal.Footer> */}
+        <Modal.Body>{renderForm()}</Modal.Body>
       </Modal>
     </div>
   );
 }
 
-export default PlanTripModal;
+export default EditStageModal;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, FloatingLabel, Form } from "react-bootstrap";
 import {
   useGetAllHostelsQuery,
@@ -20,9 +20,10 @@ import HomepageModal from "../Homepage/HomepageModal";
 import { render } from "react-dom";
 import { useHistory } from "react-router";
 import SearchBar from "./SearchBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GoogleApiWrapper } from "google-maps-react";
-import { computeDistanceBetween } from "spherical-geometry-js";
+import { computeDistanceBetween, interpolate } from "spherical-geometry-js";
+import { totalDistance } from "../../reduxStore/slices/itinerarySlice";
 
 const containerStyle = {
   width: "100%",
@@ -46,6 +47,10 @@ function Map(props) {
   const [showInfo, setShowInfo] = useState(false);
   const [infoData, setInfoData] = useState();
   const [mapKey, setMapKey] = useState(0);
+
+  // const [totalDistance, setTotalDistace] = useState(0);
+  const dispatch = useDispatch();
+  const polyRef = useRef();
 
   const path = useSelector((state) => state.itinerary.path);
 
@@ -86,15 +91,9 @@ function Map(props) {
     return arraySlice.map((key, val) => {
       console.log(key, val);
 
-      // console.log({
-      //   lat: key[val].lat,
-      //   lng: key[val].lng,
-      // });
-
       if (key[0] && key[1] != undefined) {
         let subArr = key[val];
-        console.log("sub arr is ", key);
-        var distance = computeDistanceBetween(
+        let distance = computeDistanceBetween(
           {
             lat: key[0].lat,
             lng: key[0].lng,
@@ -104,19 +103,34 @@ function Map(props) {
             lng: key[1].lng,
           }
         );
+        dispatch(totalDistance(distance));
+        //  console.log("tot dis is:", totalDistance);
+        let mid = interpolate(
+          {
+            lat: key[0].lat,
+            lng: key[0].lng,
+          },
+          {
+            lat: key[1].lat,
+            lng: key[1].lng,
+          },
+          0.5
+        );
         return (
-          <InfoWindow
-            key={val}
-            position={{
-              lat: key[0].lat,
-              lng: key[0].lng,
-            }}
-            onCloseClick={() => {
-              // setShowInfo(false);
-            }}
-          >
-            <span>distance is: {distance * 0.001} km</span>
-          </InfoWindow>
+          <>
+            <InfoWindow
+              key={val}
+              position={{
+                lat: mid.latitude,
+                lng: mid.longitude,
+              }}
+              onCloseClick={() => {
+                // setShowInfo(false);
+              }}
+            >
+              <span>distance is: {distance * 0.001} km</span>
+            </InfoWindow>
+          </>
         );
       }
     });
@@ -124,6 +138,7 @@ function Map(props) {
 
   useEffect(() => {
     renderPathDistanceWindow();
+    console.log("path changed aga");
   }, [path]);
 
   useEffect(() => {
@@ -215,6 +230,7 @@ function Map(props) {
             path={path}
             options={options}
             onClick={(a) => console.log(a)}
+            ref={polyRef}
           />
         </GoogleMap>
       </LoadScript>

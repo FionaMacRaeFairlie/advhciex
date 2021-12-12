@@ -21,8 +21,8 @@ const Home = (props) => {
 
   const searchedHostel = useSelector((state) => state.hostels.data);
 
-  const { data, error, isLoading, isSuccess, refetch } =
-    useGetAllHostelsQuery();
+  // const { data, error, isLoading, isSuccess, refetch } =
+  //   useGetAllHostelsQuery();
   const hostelsData = useSelector((state) => state.hostels.allHostels);
 
   // useEffect(() => {

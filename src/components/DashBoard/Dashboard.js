@@ -18,10 +18,12 @@ import {
 import SearchModal from "../Homepage/searchModal";
 import { useSelector } from "react-redux";
 import PlanTripModal from "../PlanTrip/PlanTripModal";
+import ViewTripModal from "../EditTrip/ViewTripModal";
 const Dashboard = () => {
   const { data, error, isLoading, isSuccess } = useGetAllHostelsQuery();
   const [showHostelsModal, setShowHostelsModal] = useState(false);
   const [planTripModal, setPlanTripModal] = useState(false);
+  const [editTripModal, setEditTripModal] = useState(false);
   const user = useSelector((state) => state.login.verifyUser.user);
 
   const [newUserItinerary] = useNewUserItineraryMutation();
@@ -53,7 +55,14 @@ const Dashboard = () => {
           >
             Plan your Trip
           </Button>
-          <Button className="dashBtn">View Your Journey</Button>
+          <Button
+            className="dashBtn"
+            onClick={() => {
+              setEditTripModal(true);
+            }}
+          >
+            View Your Journey
+          </Button>
         </ButtonGroup>
       </div>
 
@@ -73,6 +82,13 @@ const Dashboard = () => {
         <PlanTripModal
           show={planTripModal}
           onHide={() => setPlanTripModal(false)}
+        />
+      )}
+
+      {editTripModal && (
+        <ViewTripModal
+          show={editTripModal}
+          onHide={() => setEditTripModal(false)}
         />
       )}
     </div>
