@@ -38,7 +38,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "startBack": "nodemon backend/bin/www",
-    "startAll": "npm-run-all --parallel start startBack"
+    "startAll": "npm-run-all --parallel start startBack",
+    "depBack":"cd backend && npm install",
+    "startBuild":"npm-run-all --parallel depBack start startBack "
   },
   "eslintConfig": {
     "extends": [
