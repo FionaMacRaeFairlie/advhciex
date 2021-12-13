@@ -34,6 +34,8 @@ const Login = () => {
 
   const user = useSelector((state) => state.login.verifyUser);
 
+  const { data: hostelsData } = useGetAllHostelsQuery();
+
   useEffect(() => {
     if (user.success) {
       history.push("/homepage");

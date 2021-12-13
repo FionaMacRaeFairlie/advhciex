@@ -68,6 +68,11 @@ function EditStageModal(props) {
               </option>
               {renderOptions()}
             </Form.Select>
+            {errors.hostelStage?.type === "required" && (
+              <span className="errors">
+                Please choose an hostel from the list
+              </span>
+            )}
             <Form.Select {...register("nights", { required: true })}>
               <option selected={true} disabled="disabled" value="">
                 How many nights?
@@ -78,6 +83,11 @@ function EditStageModal(props) {
               <option value="4">4</option>
               <option value="5">5</option>
             </Form.Select>
+            {errors.nights?.type === "required" && (
+              <span className="errors">
+                Please select how many nights you are planning to stay here!
+              </span>
+            )}
           </div>
         </form>
         <Button

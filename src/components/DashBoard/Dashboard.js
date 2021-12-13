@@ -16,9 +16,11 @@ import {
   useNewUserItineraryMutation,
 } from "../../reduxStore/RTKfetch/apiSlice";
 import SearchModal from "../Homepage/searchModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PlanTripModal from "../PlanTrip/PlanTripModal";
 import ViewTripModal from "../EditTrip/ViewTripModal";
+import { logOut } from "../../reduxStore/slices/loginSlice";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 const Dashboard = () => {
   const { data, error, isLoading, isSuccess } = useGetAllHostelsQuery();
   const [showHostelsModal, setShowHostelsModal] = useState(false);
@@ -27,7 +29,8 @@ const Dashboard = () => {
   const user = useSelector((state) => state.login.verifyUser.user);
 
   const [newUserItinerary] = useNewUserItineraryMutation();
-
+  const dispatch = useDispatch();
+  const history = useHistory();
   return (
     <div className="dashWrapper">
       <span>Your Account:</span>
@@ -62,6 +65,15 @@ const Dashboard = () => {
             }}
           >
             View Your Journey
+          </Button>
+          <Button
+            className="dashBtn"
+            onClick={() => {
+              history.push("/");
+              dispatch(logOut());
+            }}
+          >
+            Log out
           </Button>
         </ButtonGroup>
       </div>

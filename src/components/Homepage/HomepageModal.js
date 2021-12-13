@@ -125,6 +125,9 @@ function HomepageModal(props) {
             {...register("WriteReview", { required: true })}
           />
         </FloatingLabel>
+        {errors.WriteReview?.type === "required" && (
+          <span className="errors">Please write your review</span>
+        )}
       </form>
     );
   };
@@ -179,6 +182,10 @@ function HomepageModal(props) {
               {...register("hostelRate", { required: true })}
               value="5"
             />
+            <br />
+            {errors.hostelRate?.type === "required" && (
+              <span className="errors">Please select an option</span>
+            )}
           </div>
         ))}
       </form>
