@@ -3,7 +3,7 @@ var router = express.Router();
 
 const dbDAO = require("../db/nedb");
 const userDAO = require("../db/userModel");
-const db = new dbDAO("./public/database1.db");
+const db = new dbDAO("./public/database.db");
 
 const auth = require("../auth/auth");
 const { ensureLoggedIn } = require("connect-ensure-login");
