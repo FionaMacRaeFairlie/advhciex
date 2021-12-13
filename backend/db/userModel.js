@@ -48,5 +48,5 @@ class UserDAO {
     });
   }
 }
-const dao = new UserDAO("./public/database1.db");
+const dao = new UserDAO("./public/database.db");
 module.exports = dao;

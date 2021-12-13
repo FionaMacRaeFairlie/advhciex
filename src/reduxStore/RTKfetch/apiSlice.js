@@ -119,7 +119,7 @@ export const dataApi = createApi({
     updateItineraryStage: builder.mutation({
       query: (data) => ({
         url: `/itineraries/stages/update/${data.userName}/${data.stageId}`,
-        method: "Post",
+        method: "POST",
         body: { hostel: data.hostel, nights: data.nights },
         headers: { "content-type": "application/json" },
       }),
@@ -134,6 +134,19 @@ export const dataApi = createApi({
           console.log(err);
         }
       },
+    }),
+    registerMut: builder.mutation({
+      query: (data) => ({
+        url: `/register`,
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: {
+          username: data.username,
+          password: data.password,
+          name: data.firstName,
+          surname: data.surname,
+        },
+      }),
     }),
   }),
 });
@@ -154,4 +167,5 @@ export const {
   useLazyGetHostelByIdNoCBQuery,
   useSetItineraryStartDateMutation,
   useUpdateItineraryStageMutation,
+  useRegisterMutMutation,
 } = dataApi;

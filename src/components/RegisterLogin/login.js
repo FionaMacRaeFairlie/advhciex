@@ -75,6 +75,9 @@ const Login = () => {
                   {...register("username", { required: true })}
                 />
               </FloatingLabel>
+              {errors.username?.type === "required" && (
+                <span className="errors">Please enter your username</span>
+              )}
 
               <FloatingLabel controlId="floatingPassword" label="Password">
                 <Form.Control
@@ -83,7 +86,10 @@ const Login = () => {
                   {...register("password", { required: true })}
                 />
               </FloatingLabel>
-
+              {errors.password?.type === "required" && (
+                <span className="errors">Please enter your password</span>
+              )}
+              <br />
               <Button className="primButton" type="submit">
                 Start Now
               </Button>

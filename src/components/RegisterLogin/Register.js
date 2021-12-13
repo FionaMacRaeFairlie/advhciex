@@ -7,24 +7,10 @@ import "./style/register.scss";
 import "./style/common.scss";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
+import { useRegisterMutMutation } from "../../reduxStore/RTKfetch/apiSlice";
 
 const Register = () => {
   const history = useHistory();
-  // useEffect(() => {
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       mail: "yhis@email.com",
-  //       password: "1234",
-  //       name: "gigi",
-  //       surname: "latrottola",
-  //     }),
-  //   };
-  //   fetch("/api/register", requestOptions)
-  //     .then((response) => response.json())
-  //     .then((data) => this.setState({ postId: data.id }));
-  // }, []);
 
   const {
     register,
@@ -33,21 +19,14 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    console.log(errors);
+  }, []);
+
+  const [registerMut] = useRegisterMutMutation();
+
   const onSubmit = (data) => {
-    console.log(data);
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: data.username,
-        password: data.password,
-        name: data.firstName,
-        surname: data.surname,
-      }),
-    };
-    fetch("/register", requestOptions).then(() => {});
-    //  .then((response) => response.json())
-    // .then((data) => this.setState({ postId: data.id }));
+    registerMut(data);
     history.push("/login");
   };
   return (
@@ -65,10 +44,14 @@ const Register = () => {
                 <Form.Control
                   type="text"
                   placeholder="Mark"
-                  {...register("firstName", { required: true })}
+                  {...register("firstName", {
+                    required: true,
+                  })}
                 />
               </FloatingLabel>
-
+              {errors.firstName?.type === "required" && (
+                <span className="errors">First name is required</span>
+              )}
               <FloatingLabel
                 controlId="floatingSurname"
                 label="Surname"
@@ -80,7 +63,9 @@ const Register = () => {
                   {...register("surname", { required: true })}
                 />
               </FloatingLabel>
-
+              {errors.surname?.type === "required" && (
+                <span className="errors">Surname is required</span>
+              )}
               <FloatingLabel
                 controlId="floatingInput"
                 label="username"
@@ -92,7 +77,11 @@ const Register = () => {
                   {...register("username", { required: true })}
                 />
               </FloatingLabel>
-
+              {errors.username?.type === "required" && (
+                <span className="errors">
+                  Please choose a username for your account
+                </span>
+              )}
               <FloatingLabel controlId="floatingPassword" label="Password">
                 <Form.Control
                   type="password"
@@ -100,7 +89,12 @@ const Register = () => {
                   {...register("password", { required: true })}
                 />
               </FloatingLabel>
-
+              {errors.password?.type === "required" && (
+                <span className="errors">
+                  Please choose a password for your account
+                </span>
+              )}
+              <br />
               <Button className="primButton" type="submit">
                 Start Now
               </Button>
