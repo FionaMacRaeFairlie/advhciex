@@ -40,7 +40,8 @@
     "startBack": "nodemon backend/bin/www",
     "startAll": "npm-run-all --parallel start startBack",
     "depBack":"cd backend && npm install",
-    "startBuild":"npm-run-all --parallel depBack start startBack "
+    "startBuild":"npm-run-all --parallel depBack start startBack ",
+    "heroku-postbuild": "npm run startBuild"
   },
   "eslintConfig": {
     "extends": [
