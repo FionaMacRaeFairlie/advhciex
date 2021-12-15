@@ -6,7 +6,7 @@ import {
   itineraryExist,
   resetPathAfterEdit,
 } from "../slices/itinerarySlice";
-import { verifyUser } from "../slices/loginSlice";
+import { logOut, verifyUser } from "../slices/loginSlice";
 export const dataApi = createApi({
   reducerPath: "dataAPI",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001" }),
@@ -72,6 +72,17 @@ export const dataApi = createApi({
     getItineraryByUser: builder.query({
       query: (name) => `/itineraries/${name}`,
     }),
+    logOut: builder.query({
+      query: (name) => ({ url: `/logout` }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        console.log("login Query started");
+        try {
+          dispatch(logOut());
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    }),
 
     postReview: builder.mutation({
       query: (data) => ({
@@ -135,6 +146,25 @@ export const dataApi = createApi({
         }
       },
     }),
+    deleteStage: builder.mutation({
+      query: (data) => ({
+        url: `/itineraries/stages/cancel/${data.userName}/${data.stageId}`,
+        method: "POST",
+        //body: { hostel: data.hostel, nights: data.nights },
+        headers: { "content-type": "application/json" },
+      }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        console.log("storing itinerary in redux store");
+        try {
+          const { data } = await queryFulfilled;
+          // console.log(data, "query finished");
+          dispatch(getItinerary(data));
+          //dispatch(resetPathAfterEdit(data));
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    }),
     registerMut: builder.mutation({
       query: (data) => ({
         url: `/register`,
@@ -168,4 +198,7 @@ export const {
   useSetItineraryStartDateMutation,
   useUpdateItineraryStageMutation,
   useRegisterMutMutation,
+  useLazyLogOutQuery,
+  useDeleteStageMutation,
+  useLazyGetAuthorizationQuery,
 } = dataApi;

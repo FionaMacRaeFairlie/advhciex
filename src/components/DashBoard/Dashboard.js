@@ -13,13 +13,13 @@ import "./style/dashboard.scss";
 import { useState } from "react";
 import {
   useGetAllHostelsQuery,
+  useLazyLogOutQuery,
   useNewUserItineraryMutation,
 } from "../../reduxStore/RTKfetch/apiSlice";
 import SearchModal from "../Homepage/searchModal";
 import { useDispatch, useSelector } from "react-redux";
 import PlanTripModal from "../PlanTrip/PlanTripModal";
 import ViewTripModal from "../EditTrip/ViewTripModal";
-import { logOut } from "../../reduxStore/slices/loginSlice";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 const Dashboard = () => {
   const { data, error, isLoading, isSuccess } = useGetAllHostelsQuery();
@@ -27,6 +27,8 @@ const Dashboard = () => {
   const [planTripModal, setPlanTripModal] = useState(false);
   const [editTripModal, setEditTripModal] = useState(false);
   const user = useSelector((state) => state.login.verifyUser.user);
+
+  const [trigger] = useLazyLogOutQuery();
 
   const [newUserItinerary] = useNewUserItineraryMutation();
   const dispatch = useDispatch();
@@ -69,8 +71,9 @@ const Dashboard = () => {
           <Button
             className="dashBtn"
             onClick={() => {
+              //dispatch(logOut());
+              trigger();
               history.push("/");
-              dispatch(logOut());
             }}
           >
             Log out

@@ -14,6 +14,7 @@ import {
   useAuthMutation,
   useGetAllHostelsQuery,
   useGetAuthorizationQuery,
+  useLazyGetAuthorizationQuery,
 } from "../../reduxStore/RTKfetch/apiSlice";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 const Login = () => {
@@ -30,7 +31,11 @@ const Login = () => {
   const [toBeValidated, setTobeValidated] = useState();
 
   const { data, error, isLoading, isSuccess, refetch } =
-    useGetAuthorizationQuery(toBeValidated);
+    useGetAuthorizationQuery(toBeValidated, {
+      refetchOnMountOrArgChange: true,
+    });
+
+  const [trigger] = useLazyGetAuthorizationQuery();
 
   const user = useSelector((state) => state.login.verifyUser);
 
@@ -47,6 +52,7 @@ const Login = () => {
       password: formData.password,
     });
 
+    //  trigger(toBeValidated);
     console.log(data, error, isLoading, isSuccess);
 
     {

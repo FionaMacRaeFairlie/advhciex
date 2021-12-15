@@ -369,6 +369,11 @@ router.get("/itineraries/startdate/:user/:date", function (req, res) {
   res.send(itinerary);
 });
 
+router.get("/logout", function (req, res) {
+  req.logOut();
+  req.session.destroy();
+});
+
 /* POST new itinerary stage */
 /* body should be of the form {"hostel":1, "nights":2} */
 /* doesn't check for valid hostel id */
@@ -407,6 +412,26 @@ router.post("/itineraries/stages/update/:user/:stage", function (req, res) {
   res.send(itinerary);
 });
 
+router.post("/itineraries/stages/cancel/:user/:stage", function (req, res) {
+  stagenumber = req.params["stage"];
+  var user = req.params["user"];
+  var itinerary = itineraries.find((x) => x.user == user);
+  if (itinerary) {
+    console.log("stagenumber is", stagenumber);
+    if (stagenumber) {
+      var newArray = itinerary.stages.filter(
+        (item) => item.stage !== parseInt(stagenumber)
+      );
+      console.log("newarray is:", newArray);
+      itinerary.stages = newArray;
+    }
+    res.status(202);
+  } else {
+    res.status(404);
+  }
+  res.send(itinerary);
+});
+
 router.post("/register", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
@@ -429,35 +454,6 @@ router.post("/register", function (req, res) {
     res.status(202);
   });
 });
-
-// router.post(
-//   "/login",
-//   passport.authenticate(
-//     "local",
-//     {
-//       //successRedirect: "/",
-//       failureRedirect: "/login",
-//       failureFlash: "Invalid username or password.",
-//       successFlash: "Auth",
-//     }
-//     // (req, res) => {
-//     //   console.log("response", res);
-//     //   return res;
-//     // }
-//   ),
-//   function (req, res) {
-//     console.log("\x1b[34m req", req.body);
-//     console.log("\x1b[34m res", res.status());
-
-//     // auth.authorize("/login")
-//     // console.log("\x1b[37m auth is=>", auth1);
-//     // console.log("\x1b[33m", "entering dashboard ");
-//     // console.log("auth?", req.isAuthenticated());
-//     // console.log("\n session is ", req.session);
-//     // console.log(req.user);
-//     //res.send(req.user);
-//   }
-// );
 
 router.post("/login", function (req, res, next) {
   passport.authenticate("local", function (err, user, info) {

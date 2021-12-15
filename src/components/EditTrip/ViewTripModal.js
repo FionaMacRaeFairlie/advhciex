@@ -18,6 +18,7 @@ import {
 //import "./style/planTripStyle.scss";
 import { itineraryExist } from "../../reduxStore/slices/itinerarySlice";
 import EditStageModal from "./EditStageModal";
+import { useDeleteStageMutation } from "../../reduxStore/RTKfetch/apiSlice";
 
 function ViewTripModal(props) {
   //   const {
@@ -35,7 +36,11 @@ function ViewTripModal(props) {
 
   const hostels = useSelector((state) => state.hostels.allHostels);
 
+  const [deletestage] = useDeleteStageMutation();
+  const user = useSelector((state) => state.login.verifyUser.user);
+
   const itinerary = useSelector((state) => state.itinerary.itinerary.stages);
+  const itineraryExist = useSelector((state) => state.itinerary.itineraryExist);
   const totDis = useSelector((state) => state.itinerary.totalDistance);
   const renderItinerary = () => {
     return itinerary.map((key, val) => {
@@ -62,6 +67,16 @@ function ViewTripModal(props) {
             >
               edit stage{" "}
             </Button>
+
+            <Button
+              className="primButton"
+              onClick={() => {
+                deletestage({ userName: user.user, stageId: key.stage });
+              }}
+              type="submit"
+            >
+              Cancel stage
+            </Button>
           </div>
         </div>
       );
@@ -79,12 +94,18 @@ function ViewTripModal(props) {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Edit your trip
+              Your trip
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Total distance is {totDis * 0.001}
-            {renderItinerary()}
+            {itineraryExist ? (
+              <>
+                Total distance is {totDis * 0.001}
+                {renderItinerary()}
+              </>
+            ) : (
+              <h3>You dont have an itinerary yet please create one</h3>
+            )}
           </Modal.Body>
           {/* <Modal.Footer>
          
