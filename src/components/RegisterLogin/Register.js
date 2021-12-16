@@ -25,8 +25,12 @@ const Register = () => {
 
   const [registerMut] = useRegisterMutMutation();
 
-  const onSubmit = (data) => {
-    registerMut(data);
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    handleSubmit((data) => {
+      registerMut(data);
+    })(e);
     history.push("/login");
   };
   return (
@@ -35,7 +39,7 @@ const Register = () => {
         <Col>
           <div className="formContainer">
             <h2>Register here to set up your account</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form>
               <FloatingLabel
                 controlId="floatingName"
                 label="FirstName"
@@ -95,7 +99,13 @@ const Register = () => {
                 </span>
               )}
               <br />
-              <Button className="primButton" type="submit">
+              <Button
+                className="primButton"
+                type="submit"
+                onClick={(event) => {
+                  onSubmit(event);
+                }}
+              >
                 Start Now
               </Button>
             </form>
