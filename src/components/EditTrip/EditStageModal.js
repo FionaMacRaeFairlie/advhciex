@@ -6,18 +6,9 @@ import PieChart from "../Chart/Chart";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  useGetHostelByIdQuery,
-  usePostRateMutation,
-  usePostReviewMutation,
-  useGetAllHostelsQuery,
-  useNewItineraryStageMutation,
   useGetItineraryByUserQuery,
-  useSetItineraryStartDateMutation,
   useUpdateItineraryStageMutation,
-  useDeleteStageMutation,
 } from "../../reduxStore/RTKfetch/apiSlice";
-//import "./style/planTripStyle.scss";
-import { itineraryExist } from "../../reduxStore/slices/itinerarySlice";
 
 function EditStageModal(props) {
   const {
@@ -28,21 +19,12 @@ function EditStageModal(props) {
     reset,
   } = useForm();
 
-  //   const [stage, setAddStage] = useState(1);
   const hostels = useSelector((state) => state.hostels.allHostels);
   const user = useSelector((state) => state.login.verifyUser.user);
-  //   const isItinerary = useSelector((state) => state.itinerary.itineraryExist);
   const { data: itineraryData, refetch: refetchItinerary } =
     useGetItineraryByUserQuery(user.user);
 
   const [updateItineraryStage] = useUpdateItineraryStageMutation();
-
-  //   const [setItDate] = useSetItineraryStartDateMutation();
-
-  //   const [showStageForm, setShowStageForm] = useState(false);
-  //   const [showDateForm, setShowDateForm] = useState(true);
-
-  //   const dispatch = useDispatch();
 
   useEffect(() => {
     console.log("props", props);

@@ -1,28 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  FloatingLabel,
-  Form,
-  Modal,
-  ButtonGroup,
-} from "react-bootstrap";
-import { useGetAllHostelsQuery } from "../../reduxStore/RTKfetch/apiSlice";
+import { Modal } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import {
-  GoogleMap,
-  LoadScript,
-  Marker,
-  InfoWindow,
-} from "@react-google-maps/api";
 import "./styles/modalStyle.scss";
 import "./styles/searchModal.scss";
 
-import {
-  getHostels,
-  selectedHostel,
-} from "../../reduxStore/slices/hostelSlice";
+import { selectedHostel } from "../../reduxStore/slices/hostelSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 function SearchModal(props) {
@@ -31,12 +13,7 @@ function SearchModal(props) {
 
   const { onHide } = props;
   useEffect(() => {
-    // console.log(props.data);
-    // console.log(props.title);
-    // console.log(props);
     dispatch(selectedHostel(searchedHostel));
-
-    // onHide();
   }, [searchedHostel]);
 
   useEffect(() => {

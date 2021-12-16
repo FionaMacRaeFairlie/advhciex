@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, FloatingLabel, Form } from "react-bootstrap";
-import {
-  useGetAllHostelsQuery,
-  useGetHostelByIdQuery,
-  useGetItineraryByUserQuery,
-  useLazyGetHostelByIdQuery,
-} from "../../reduxStore/RTKfetch/apiSlice";
+import { useGetHostelByIdQuery } from "../../reduxStore/RTKfetch/apiSlice";
 import Button from "react-bootstrap/Button";
 import {
   GoogleMap,
@@ -13,7 +8,6 @@ import {
   Marker,
   InfoWindow,
   Polyline,
-  useJsApiLoader,
 } from "@react-google-maps/api";
 import "./styles/mapstyle.scss";
 import HomepageModal from "../Homepage/HomepageModal";

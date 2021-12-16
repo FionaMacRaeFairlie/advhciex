@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Form, FloatingLabel } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import { Chart, Pie } from "react-chartjs-2";
-import PieChart from "../Chart/Chart";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  useGetHostelByIdQuery,
-  usePostRateMutation,
-  usePostReviewMutation,
-  useGetAllHostelsQuery,
   useNewItineraryStageMutation,
   useGetItineraryByUserQuery,
   useSetItineraryStartDateMutation,

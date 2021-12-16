@@ -1,17 +1,13 @@
 import Button from "react-bootstrap/Button";
 import React, { useEffect, useState } from "react";
-import { render } from "react-dom";
 import { Container, Row, Col, FloatingLabel, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./style/register.scss";
 import "./style/common.scss";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
-import { auth, verifyUser } from "../../reduxStore/slices/loginSlice";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  dataApi,
-  useAuthMutation,
   useGetAllHostelsQuery,
   useGetAuthorizationQuery,
   useLazyGetAuthorizationQuery,

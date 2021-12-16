@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FloatingLabel, Form, Button, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import HomepageModal from "../Homepage/HomepageModal";
 import SearchModal from "../Homepage/searchModal";
 import "./styles/barStyle.scss";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import {
-  useGetHostelSearchQuery,
-  useLazyGetHostelSearchQuery,
-  usePrefetch,
-} from "../../reduxStore/RTKfetch/apiSlice";
+import { useLazyGetHostelSearchQuery } from "../../reduxStore/RTKfetch/apiSlice";
 const SearchBar = (dataToFilter) => {
   const {
     register,
@@ -31,12 +26,6 @@ const SearchBar = (dataToFilter) => {
   const [trigger, result, lastPromiseInfo] = useLazyGetHostelSearchQuery(query);
 
   const onSubmit = (formData) => {
-    // console.log(formData);
-    // console.log("hey bar click");
-    // console.log("bar comp hostel", searchedHostel);
-
-    //MANUALLY FETCHING COUSE HOOK INVALID IN FUNCTION NEED TO SOLVE THIS
-
     fetch("/hostels/search/" + formData.searchBar)
       .then((res) => res.json())
       .then((data) => {
@@ -44,10 +33,6 @@ const SearchBar = (dataToFilter) => {
         setModalData(data);
         setShowModal(true);
       });
-    // setQueryData(formData.searchBar);
-    // trigger(formData.searchBar);
-
-    // console.log("redux data is ->", trigger, result, lastPromiseInfo);
   };
 
   useEffect(() => {
