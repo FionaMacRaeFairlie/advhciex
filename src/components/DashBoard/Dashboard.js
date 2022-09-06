@@ -89,7 +89,7 @@ const Dashboard = () => {
           onHide={() => setShowHostelsModal(false)}
           //btnClick={()=>{}}
           data={data}
-          title={"List of hostels along the way!"}
+          title={"List of hostels along the way"}
         ></SearchModal>
       )}
 

@@ -4,18 +4,26 @@ import { Pie } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function PieChart(props) {
-  const label = props.data.map((key, val) => {
-    return "rating";
-  });
+
+  const arr = props.data;
+  const fr = [0, 0, 0, 0, 0];
+
+  for (var i = 0; i < arr.length; i++) {
+    for (var j = 0; j < 6; j++) {
+      if (arr[i] == j + 1) {
+        fr[j]++;
+      }
+    }
+  }
 
   const data = {
-    labels: label,
+    labels:["one star","two stars","three stars","four stars","five stars"],
     datasets: [
       {
         label: "Ratings distribution",
-        data: props.data,
-        backgroundColor: ["#aebcb2", "#9fb7cc", "#686b6d", "#d8dde1"],
-        borderColor: ["#aebcb2", "#9fb7cc", "#686b6d", "#d8dde1"],
+        data: fr,
+        backgroundColor: ["#686b6d","#B59FCD",  "#d8dde1", "#9fb7cc","#aebcb2"],
+        borderColor: ["#686b6d", "#B59FCD",  "#d8dde1", "#9fb7cc","#aebcb2"],
         borderWidth: 1,
       },
     ],

@@ -44,7 +44,7 @@ const SearchBar = (dataToFilter) => {
       <form onSubmit={handleSubmit(onSubmit)} className="searchForm">
         <Row className="barRow">
           <Col>
-            <FloatingLabel controlId="searchBar" label="search an hostel!">
+            <FloatingLabel controlId="searchBar" label="Search an hostel">
               <Form.Control
                 type="text"
                 placeholder="Search.."
@@ -65,7 +65,7 @@ const SearchBar = (dataToFilter) => {
           onHide={() => setShowModal(false)}
           //btnClick={()=>{}}
           data={modalData}
-          title={"The following hostels were found!"}
+          title={"The following hostels were found : "}
         ></SearchModal>
       )}
     </div>

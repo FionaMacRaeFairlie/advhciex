@@ -19,12 +19,12 @@ const LandingPage = () => {
 
             <h3>Plan now your journey along the route:</h3>
 
-            <ul className="list">
-              <li>check hostels availability</li>
-              <li>check hostels review</li>
-              <li>share your experience with the community</li>
-              <li>plan your trip and modify it as you need</li>
-              <li>view your journey progress</li>
+            <ul className="list-group">
+              <li class="list-group-item">check hostels availability</li>
+              <li class="list-group-item">check hostels review</li>
+              <li class="list-group-item">share your experience with the community</li>
+              <li class="list-group-item">plan your trip and modify it as you need</li>
+              <li class="list-group-item">view your journey progress</li>
             </ul>
             <Link to="/register">
               <Button className="primButton landBtn">Start Now</Button>
