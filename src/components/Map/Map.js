@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Container, Row, Col, FloatingLabel, Form } from "react-bootstrap";
 import { useGetHostelByIdQuery } from "../../reduxStore/RTKfetch/apiSlice";
 import Button from "react-bootstrap/Button";
 import {
@@ -7,21 +6,18 @@ import {
   LoadScript,
   Marker,
   InfoWindow,
-  Polyline,
 } from "@react-google-maps/api";
 import "./styles/mapstyle.scss";
 import HomepageModal from "../Homepage/HomepageModal";
-import { render } from "react-dom";
 import { useHistory } from "react-router";
 import SearchBar from "./SearchBar";
 import { useDispatch, useSelector } from "react-redux";
-import { GoogleApiWrapper } from "google-maps-react";
 import { computeDistanceBetween, interpolate } from "spherical-geometry-js";
 import { totalDistance } from "../../reduxStore/slices/itinerarySlice";
 
 const containerStyle = {
   width: "100%",
-  height: "100vh",
+  height: "200vh",
 };
 
 const center = {
@@ -31,10 +27,7 @@ const center = {
 
 function Map(props) {
   const itinerary = useSelector((state) => state.itinerary.itinerary.stages);
-
-  // const hostelsData = useSelector((state) => state.hostels.allHostels);
   let data = props.hostels;
-  const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState();
 
@@ -44,21 +37,8 @@ function Map(props) {
 
   // const [totalDistance, setTotalDistace] = useState(0);
   const dispatch = useDispatch();
-  const polyRef = useRef();
 
   const path = useSelector((state) => state.itinerary.path);
-
-  const options = {
-    strokeColor: "black",
-    strokeOpacity: 0.8,
-    strokeWeight: 3,
-    clickable: true,
-    draggable: false,
-    editable: false,
-    visible: true,
-    radius: 30000,
-    zIndex: 1,
-  };
 
   const chunk = (array, size) => {
     const chunked_arr = [];
@@ -180,7 +160,7 @@ function Map(props) {
           zoom={10}
           key={mapKey}
         >
-          <SearchBar />
+        
           {displayMarkers(data)}
 
           {showInfo && (
@@ -219,13 +199,16 @@ function Map(props) {
               </InfoWindow>
             </div>
           )}
-          {true && <div>{renderPathDistanceWindow()}</div>}
-          <Polyline
+          {true &&
+           <div>
+             {/* {renderPathDistanceWindow()} */}
+           </div>}
+          {/* <Polyline
             path={path}
             options={options}
             onClick={(a) => console.log(a)}
             ref={polyRef}
-          />
+          /> */}
         </GoogleMap>
       </LoadScript>
       {showModal && (

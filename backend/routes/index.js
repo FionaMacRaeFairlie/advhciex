@@ -491,7 +491,7 @@ router.get("/hostels/:id", function (req, res) {
   res.send(selectedhostels);
 });
 
-/* GET books by search term in description or title (TBD) */
+/* GET hostel by search term in description or title (TBD) */
 router.get("/hostels/search/:term", function (req, res) {
   var selectedhostels = hostels.filter(function (hostel) {
     var result =

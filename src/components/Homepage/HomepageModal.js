@@ -20,7 +20,8 @@ function HomepageModal(props) {
     }
 
     var avg = sum / elmt.length;
-    return avg;
+    var fixed = avg.toFixed(1)
+    return fixed;
   };
 
   const [showReviews, setShowReviews] = useState(false);

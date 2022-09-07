@@ -1,11 +1,13 @@
 import React from "react";
-import { Container, Row, Col, FloatingLabel, Form } from "react-bootstrap";
+import { Container, Row, Col} from "react-bootstrap";
 import Map from "../Map/Map";
 import Dashboard from "../DashBoard/Dashboard";
 import { useDispatch, useSelector } from "react-redux";
 import HomepageModal from "./HomepageModal";
 import { selectedHostel } from "../../reduxStore/slices/hostelSlice";
 import { Link } from "react-router-dom";
+import Search from "../Search/Search"
+
 const Home = (props) => {
   const userVerified = useSelector((state) => state.login.verifyUser);
 
@@ -19,12 +21,13 @@ const Home = (props) => {
     <div>
       {userVerified.success ? (
         <Container fluid>
-          <Row>
-            <Col>
+          <Row className="row align-items-start">
+            <Col className=" col-md-1 col-lg-1">  <Dashboard ></Dashboard></Col>
+            <Col className=" col-md-9 col-lg-9">
               <Map hostels={hostelsData}></Map>
             </Col>
-            <Col xs lg="2" className="dashCol">
-              <Dashboard></Dashboard>
+            <Col className="col-sm-12 col-md-2 col-lg-2">
+            <Search details={hostelsData}/>        
             </Col>
           </Row>
           {searchedHostel && (

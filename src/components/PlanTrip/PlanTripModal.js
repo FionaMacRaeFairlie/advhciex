@@ -140,10 +140,12 @@ function PlanTripModal(props) {
         <Button
           className="primButton"
           onClick={handleSubmit((formData) => {
-            console.log(formData);
+            console.log("**************************");
+            console.log("start date form data ",formData);
             setItDate({ user: user.user, date: formData.startDate });
             setShowDateForm(false);
             setShowStageForm(true);
+            
           })}
           type="submit"
         >

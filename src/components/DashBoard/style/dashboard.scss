@@ -15,14 +15,15 @@ span {
 .dashWrapper {
   color: white;
   height: inherit;
-  align-items: unset;
+  //align-items: unset;
   display: flex;
   flex-direction: column;
+  vertical-align: top;
   // justify-content: space-evenly;
 }
 
 .dashCol {
-  height: 100vh;
+  height: 200vh;
   background-color: $darkGrey;
 }
 
