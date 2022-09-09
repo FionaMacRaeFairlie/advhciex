@@ -41,10 +41,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "startAll": "npm-run-all --parallel start startBack",
-    "depBack": "cd backend && npm install",
-    "startBuild": "npm-run-all --parallel start startBack ",
-    "heroku-prebuild": "npm run depBack",
+    "startAll": "npm-run-all" ,
+    "startBuild": "npm-run-all ",
     "heroku-postbuild": "npm run startBuild"
   },
   "eslintConfig": {
