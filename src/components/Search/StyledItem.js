@@ -3,7 +3,7 @@ import Accordion from "react-bootstrap/Accordion";
 import HomepageModal from "../Homepage/HomepageModal";
 
 const StyledItem = ({ item, searchTerms }) => {
-  const [isShowing,setShowing]= useState(true);
+  const [isShowing,setShowing]= useState(false);
   return (
     <>
       <div>
@@ -14,12 +14,12 @@ const StyledItem = ({ item, searchTerms }) => {
           <p>{item.address}</p>
         </Accordion.Body>
       </div>
-     {searchTerms && <HomepageModal
+     {/* {searchTerms && <HomepageModal
         show={isShowing}
         onHide={() => setShowing(false)}
         data={item}
       ></HomepageModal>}
-      {console.log("searchTerms :",searchTerms)}
+      {console.log("searchTerms :",searchTerms)} */}
     </>
   );
 };

@@ -3,16 +3,18 @@ import { Modal, Form, FloatingLabel } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import PieChart from "../Chart/Chart";
 import "./styles/modalStyle.scss";
-import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import {
-  useGetHostelByIdQuery,
-  usePostRateMutation,
-  usePostReviewMutation,
-  useGetAllHostelsQuery,
-} from "../../reduxStore/RTKfetch/apiSlice";
+// import { useForm } from "react-hook-form";
+// import { useSelector } from "react-redux";
+// import {
+//   useGetHostelByIdQuery,
+//   usePostRateMutation,
+//   usePostReviewMutation,
+//   useGetAllHostelsQuery,
+// } from "../../reduxStore/RTKfetch/apiSlice";
 
 function HomepageModal(props) {
+console.log("props :",props)
+
   const calcAvg = (elmt) => {
     var sum = 0;
     for (var i = 0; i < elmt.length; i++) {
@@ -24,48 +26,47 @@ function HomepageModal(props) {
     return fixed;
   };
 
-  const [showReviews, setShowReviews] = useState(false);
+  // const [showReviews, setShowReviews] = useState(false);
   const [init, setInit] = useState(true);
-  const [showWriteReview, setShowWriteReview] = useState(false);
-  const [showRate, setShowRate] = useState(false);
+  // const [showWriteReview, setShowWriteReview] = useState(false);
+  // const [showRate, setShowRate] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   watch,
+  //   formState: { errors },
+  // } = useForm();
 
-  const user = useSelector((state) => state.login.verifyUser.user);
+  // const user = useSelector((state) => state.login.verifyUser.user);
 
-  const [postReview, { isSuccess, status, isLoading }] =
-    usePostReviewMutation();
+  // const [postReview, { isSuccess, status, isLoading }] =     usePostReviewMutation();
 
-  const { data, error, refetch } = useGetHostelByIdQuery(props.data.id);
+  // const { data, error, refetch } = useGetHostelByIdQuery(props.data.id);
   let ratings = props.data.ratings;
 
-  const [postRate] = usePostRateMutation();
+  // const [postRate] = usePostRateMutation();
 
-  const { refetch: allHostelRefetch } = useGetAllHostelsQuery();
+  // const { refetch: allHostelRefetch } = useGetAllHostelsQuery();
   // useEffect(() => {
   //   console.log(data);
   // });
 
-  const onSubmit = (formData) => {
-    let dataToSubmit = {
-      hostelId: props.data.id,
-      name: user.personalInfo.name,
-      description: formData.WriteReview,
-    };
-    postReview(dataToSubmit);
-    props.onHide();
-  };
+  // const onSubmit = (formData) => {
+  //   let dataToSubmit = {
+  //     hostelId: props.data.id,
+  //     name: user.personalInfo.name,
+  //     description: formData.WriteReview,
+  //   };
+  //   postReview(dataToSubmit);
+  //   props.onHide();
+  // };
 
-  const onSubmitRate = (formData) => {
-    postRate({ hostelId: props.data.id, rate: formData.hostelRate });
-    allHostelRefetch();
-    props.onHide();
-  };
+  // const onSubmitRate = (formData) => {
+  //   postRate({ hostelId: props.data.id, rate: formData.hostelRate });
+  //   allHostelRefetch();
+  //   props.onHide();
+  // };
 
   const initState = () => {
     return (
@@ -101,96 +102,96 @@ function HomepageModal(props) {
     );
   };
 
-  const reviews = (d) => {
-    return d[0].reviews.map((key, val) => {
-      return (
-        <div key={val} className="reviewContainer">
-          <div className="reviewWrap">
-            <span>Name: {key.reviewer}</span>
-            <span>Description: {key.review}</span>
-          </div>
-        </div>
-      );
-    });
-  };
+  // const reviews = (d) => {
+  //   return d[0].reviews.map((key, val) => {
+  //     return (
+  //       <div key={val} className="reviewContainer">
+  //         <div className="reviewWrap">
+  //           <span>Name: {key.reviewer}</span>
+  //           <span>Description: {key.review}</span>
+  //         </div>
+  //       </div>
+  //     );
+  //   });
+  // };
 
-  const WriteReview = () => {
-    return (
-      <form className="writeReviewForm">
-        <FloatingLabel controlId="writeReviewTextArea" label="WriteReview">
-          <Form.Control
-            as="textarea"
-            placeholder="Write here your review"
-            style={{ height: "100%" }}
-            {...register("WriteReview", { required: true })}
-          />
-        </FloatingLabel>
-        {errors.WriteReview?.type === "required" && (
-          <span className="errors">Please write your review</span>
-        )}
-      </form>
-    );
-  };
+  // const WriteReview = () => {
+  //   return (
+  //     <form className="writeReviewForm">
+  //       <FloatingLabel controlId="writeReviewTextArea" label="WriteReview">
+  //         <Form.Control
+  //           as="textarea"
+  //           placeholder="Write here your review"
+  //           style={{ height: "100%" }}
+  //           {...register("WriteReview", { required: true })}
+  //         />
+  //       </FloatingLabel>
+  //       {errors.WriteReview?.type === "required" && (
+  //         <span className="errors">Please write your review</span>
+  //       )}
+  //     </form>
+  //   );
+  // };
 
-  const RateHostel = () => {
-    return (
-      <form>
-        {["radio"].map((type) => (
-          <div key={`inline-${type}`} className="mb-3">
-            <Form.Check
-              inline
-              label="1"
-              name="group1"
-              type={type}
-              id={`inline-${type}-1`}
-              {...register("hostelRate", { required: true })}
-              value="1"
-            />
-            <Form.Check
-              inline
-              label="2"
-              name="group1"
-              type={type}
-              id={`inline-${type}-2`}
-              {...register("hostelRate", { required: true })}
-              value="2"
-            />
-            <Form.Check
-              inline
-              label="3"
-              name="group1"
-              type={type}
-              id={`inline-${type}-3`}
-              {...register("hostelRate", { required: true })}
-              value="3"
-            />
-            <Form.Check
-              inline
-              label="4"
-              name="group1"
-              type={type}
-              id={`inline-${type}-4`}
-              {...register("hostelRate", { required: true })}
-              value="4"
-            />
-            <Form.Check
-              inline
-              label="5"
-              name="group1"
-              type={type}
-              id={`inline-${type}-5`}
-              {...register("hostelRate", { required: true })}
-              value="5"
-            />
-            <br />
-            {errors.hostelRate?.type === "required" && (
-              <span className="errors">Please select an option</span>
-            )}
-          </div>
-        ))}
-      </form>
-    );
-  };
+  // const RateHostel = () => {
+  //   return (
+  //     <form>
+  //       {["radio"].map((type) => (
+  //         <div key={`inline-${type}`} className="mb-3">
+  //           <Form.Check
+  //             inline
+  //             label="1"
+  //             name="group1"
+  //             type={type}
+  //             id={`inline-${type}-1`}
+  //             {...register("hostelRate", { required: true })}
+  //             value="1"
+  //           />
+  //           <Form.Check
+  //             inline
+  //             label="2"
+  //             name="group1"
+  //             type={type}
+  //             id={`inline-${type}-2`}
+  //             {...register("hostelRate", { required: true })}
+  //             value="2"
+  //           />
+  //           <Form.Check
+  //             inline
+  //             label="3"
+  //             name="group1"
+  //             type={type}
+  //             id={`inline-${type}-3`}
+  //             {...register("hostelRate", { required: true })}
+  //             value="3"
+  //           />
+  //           <Form.Check
+  //             inline
+  //             label="4"
+  //             name="group1"
+  //             type={type}
+  //             id={`inline-${type}-4`}
+  //             {...register("hostelRate", { required: true })}
+  //             value="4"
+  //           />
+  //           <Form.Check
+  //             inline
+  //             label="5"
+  //             name="group1"
+  //             type={type}
+  //             id={`inline-${type}-5`}
+  //             {...register("hostelRate", { required: true })}
+  //             value="5"
+  //           />
+  //           <br />
+  //           {errors.hostelRate?.type === "required" && (
+  //             <span className="errors">Please select an option</span>
+  //           )}
+  //         </div>
+  //       ))}
+  //     </form>
+  //   );
+  // };
 
   return (
     <div>
@@ -207,15 +208,16 @@ function HomepageModal(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {init && initState()}
+          {/* {init &&  */}
+        {initState()}
 
-          {showReviews && reviews(data)}
+          {/* {showReviews && reviews(data)}
 
           {showWriteReview && <WriteReview />}
 
-          {showRate && <RateHostel />}
+          {showRate && <RateHostel />} */}
         </Modal.Body>
-        <Modal.Footer>
+        {/* <Modal.Footer>
           {init && (
             <>
               <Button
@@ -274,7 +276,7 @@ function HomepageModal(props) {
               Post your rating
             </Button>
           )}
-        </Modal.Footer>
+        </Modal.Footer> */}
       </Modal>
     </div>
   );
