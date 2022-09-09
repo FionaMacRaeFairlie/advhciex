@@ -35,13 +35,12 @@
     "parcel": "latest",
     "sass": "^1.44.0"
   },
-  "proxy": "http://localhost:3001",
+
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "startBack": "node backend/bin/www",
     "startAll": "npm-run-all --parallel start startBack",
     "depBack": "cd backend && npm install",
     "startBuild": "npm-run-all --parallel start startBack ",
