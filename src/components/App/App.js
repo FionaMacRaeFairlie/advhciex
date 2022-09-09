@@ -1,6 +1,5 @@
 import React from "react";
 import Search from "../Search/Search"
-import "../../styles/index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MapContainer from "../MapContainer/MapContainer";
 import { Container, Row, Col} from "react-bootstrap";

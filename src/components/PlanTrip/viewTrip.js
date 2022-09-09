@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Table from "react-bootstrap/Table";
-import Alert from "react-bootstrap/Alert";
 import moment from "moment";
 
 function ViewTripPopup(props) {
@@ -30,14 +29,11 @@ function ViewTripPopup(props) {
     ]);
   };
   const handleSave = () => {
-    //alert("Please login to save your itinerary")
     setShowAlert(true);
   };
   const [showAlert, setShowAlert] = useState(false);
 
-  const setModalIsOpenToTrue = () => {
-    setShowAlert(true);
-  };
+
 
   const setModalIsOpenToFalse = () => {
     setShowAlert(false);

@@ -12,7 +12,7 @@ function Search({ details }) {
 
   const handleChange = (e) => {
     setSearchField(e.target.value);
-    if(e.target.value !="") setSearchTrue(true)
+    if(e.target.value !=="") setSearchTrue(true)
   };
 
   return (

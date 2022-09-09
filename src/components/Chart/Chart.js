@@ -10,7 +10,7 @@ function PieChart(props) {
 
   for (var i = 0; i < arr.length; i++) {
     for (var j = 0; j < 6; j++) {
-      if (arr[i] == j + 1) {
+      if (arr[i] === j + 1) {
         fr[j]++;
       }
     }

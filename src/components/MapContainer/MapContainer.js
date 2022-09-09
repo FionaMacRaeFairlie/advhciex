@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import HomepageModal from "../Homepage/HomepageModal";
 
 const MapContainer = (props) => {
@@ -43,14 +43,6 @@ const locations=props.data;
         {
             selected.location && 
             (<>
-              {/* <InfoWindow
-              position={selected.location}
-              clickable={true}
-              onCloseClick={() => setSelected({})}
-            >
-              <p>{selected.name}</p>
-            </InfoWindow>
-             */}
             <HomepageModal
         show={isShowing}
         // onHide={() => setShowing(false)}
